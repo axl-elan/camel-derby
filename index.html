@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Kamelrennen – ein Würfel-Rennspiel für bis zu 8 Kamele.">
+  <title>Kamelrennen</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐫</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap">
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+
+  <!-- ================= SETUP ================= -->
+  <main id="setup" class="screen">
+    <header class="brand">
+      <span class="brand__icon" aria-hidden="true">🐫</span>
+      <div>
+        <h1 class="brand__title">Kamelrennen</h1>
+        <p class="brand__tagline">Bis zu 8 Kamele, 1 Würfel, viel Wüstenstaub</p>
+      </div>
+    </header>
+
+    <div class="hero-banner" role="img" aria-label="Wüstenlandschaft"></div>
+
+    <section class="card">
+      <p class="setup-intro">Wähle, wer mitspielt. Menschen tragen ihren Namen ein, Computer-Kamele würfeln von allein.</p>
+      <div id="playerList"></div>
+      <div class="setup-actions">
+        <span class="hint" id="setupHint" aria-live="polite"></span>
+        <div class="row">
+          <button type="button" class="btn btn--ghost" data-sound-toggle="label">🔊 Ton an</button>
+          <button type="button" class="btn btn--primary" id="startBtn">🏁 Rennen starten</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= RACE ================= -->
+  <main id="race" class="screen" hidden>
+    <header class="race-top">
+      <div class="brand">
+        <span class="brand__icon" aria-hidden="true">🐫</span>
+        <h1 class="brand__title brand__title--small">Kamelrennen</h1>
+      </div>
+      <div class="row">
+        <button type="button" class="icon-btn" data-sound-toggle="icon" title="Ton" aria-label="Ton an/aus">🔊</button>
+        <button type="button" class="icon-btn" id="backBtn" title="Neue Spieler" aria-label="Neue Spieler">↩️</button>
+      </div>
+    </header>
+
+    <div class="track" id="track"></div>
+
+    <div class="rollbar card">
+      <div class="dice" id="dice" aria-hidden="true">🎲</div>
+      <div class="turn-info" aria-live="polite">
+        <p class="turn-info__label" id="turnLabel">Bereit?</p>
+        <p class="turn-info__sub" id="turnSub">Klicke auf würfeln, um zu starten.</p>
+      </div>
+      <button type="button" class="btn btn--roll" id="rollBtn">🎲 Würfeln</button>
+    </div>
+  </main>
+
+  <!-- ================= RESULT ================= -->
+  <div id="resultOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+    <div class="result-card">
+      <div class="result-card__hero" role="img" aria-label="Kamelreiter"></div>
+      <h2 class="result-card__title" id="resultTitle">🏆 Zieleinlauf!</h2>
+      <p class="result-card__sub">Alle Kamele sind im Ziel.</p>
+      <ol class="ranking" id="rankList"></ol>
+      <div class="result-actions">
+        <button type="button" class="btn btn--primary" id="playAgainBtn">🔁 Nochmal spielen</button>
+        <button type="button" class="btn btn--ghost" id="newPlayersBtn">👥 Neue Spieler</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TEMPLATES ================= -->
+  <template id="playerRowTemplate">
+    <div class="player-row">
+      <button type="button" class="active-toggle" data-action="toggle" aria-label="Mitspielen"></button>
+      <input type="text" class="player-row__name" data-action="name" maxlength="24" autocomplete="off">
+      <div class="segmented" role="group" aria-label="Spielertyp">
+        <button type="button" data-action="human">Mensch</button>
+        <button type="button" data-action="computer">Computer</button>
+      </div>
+      <div class="player-row__color" aria-hidden="true"></div>
+    </div>
+  </template>
+
+  <template id="laneTemplate">
+    <div class="lane">
+      <div class="lane__label">
+        <span class="lane__swatch"></span>
+        <span class="lane__name"></span>
+      </div>
+      <div class="lane__track">
+        <div class="camel"><img alt=""></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="rankRowTemplate">
+    <li class="ranking__row">
+      <span class="ranking__medal"></span>
+      <span class="ranking__name"></span>
+    </li>
+  </template>
+
+</body>
+</html>

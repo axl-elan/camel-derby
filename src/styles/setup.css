@@ -1,0 +1,109 @@
+.hero-banner {
+  width: 100%;
+  aspect-ratio: 1983 / 793;
+  max-height: 220px;
+  margin-bottom: 18px;
+  border-radius: var(--radius-lg);
+  background: url("../assets/images/backgrounds/desert.jpg") center 42% / cover;
+  box-shadow: 0 6px 0 var(--dune);
+}
+
+.setup-intro {
+  margin: 0 0 16px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.player-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.player-row:last-of-type {
+  border-bottom: none;
+}
+
+.player-row__name {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.player-row__name:disabled {
+  opacity: .55;
+}
+
+.player-row__color {
+  width: 26px;
+  height: 26px;
+  justify-self: center;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  background: var(--player-color);
+}
+
+.active-toggle {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--line);
+  background: transparent;
+  font-size: 20px;
+  color: var(--ink-soft);
+}
+
+.active-toggle[aria-pressed="true"] {
+  background: var(--palm);
+  border-color: var(--palm);
+  color: #fff;
+}
+
+.segmented {
+  display: flex;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.segmented button {
+  border: none;
+  background: transparent;
+  padding: 9px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--sun);
+  color: #fff;
+}
+
+.setup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hint {
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: 14px;
+}

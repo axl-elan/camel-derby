@@ -1,0 +1,51 @@
+/* Design tokens: colors, surfaces and fonts. Dark mode overrides the surface/ink colors only. */
+:root {
+  --sand: #FBEBC9;
+  --sand-2: #F3D89B;
+  --dune: #E7C077;
+  --ink: #4A2E1E;
+  --ink-soft: #7A5A3E;
+  --sun: #E0793E;
+  --sun-deep: #C7602A;
+  --sky: #2E8C99;
+  --sky-deep: #1F6873;
+  --palm: #4C7A5B;
+  --palm-deep: #365A41;
+  --card: #FFF8E8;
+  --line: rgba(74, 46, 30, .14);
+
+  --track-orange: #DC8D0B;
+  --gold: #C79A2A;
+  --silver: #8C8C94;
+  --bronze: #A05A2C;
+
+  --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
+  --font-display: 'Baloo 2', system-ui, sans-serif;
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --lane-label-width: 118px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sand: #2B2118;
+    --sand-2: #332619;
+    --dune: #3E2E1C;
+    --ink: #F3E4CE;
+    --ink-soft: #D8C1A0;
+    --card: #3A2B1C;
+    --line: rgba(243, 228, 206, .14);
+  }
+}
+
+:root[data-theme="dark"] {
+  --sand: #2B2118;
+  --sand-2: #332619;
+  --dune: #3E2E1C;
+  --ink: #F3E4CE;
+  --ink-soft: #D8C1A0;
+  --card: #3A2B1C;
+  --line: rgba(243, 228, 206, .14);
+}

@@ -1,0 +1,166 @@
+.race-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.race-top .brand {
+  margin-bottom: 0;
+}
+
+/* ---------- Track ---------- */
+.track {
+  padding: 170px 16px 12px;
+  border-radius: var(--radius-lg);
+  background: var(--track-orange) url("../assets/images/backgrounds/desert.jpg") top center / 100% auto no-repeat;
+  box-shadow: 0 6px 0 var(--dune);
+}
+
+.lane {
+  position: relative;
+  height: 56px;
+  margin-bottom: 6px;
+}
+
+.lane__label {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 2;
+  width: var(--lane-label-width);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+  font-weight: 800;
+  font-size: 13px;
+  background: linear-gradient(90deg, var(--card) 70%, transparent);
+}
+
+.lane__swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--player-color);
+}
+
+.lane__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lane__track {
+  --steps: 25;
+  position: relative;
+  height: 100%;
+  margin-left: var(--lane-label-width);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 calc(100% / var(--steps) - 1px),
+      rgba(255, 255, 255, .55) calc(100% / var(--steps) - 1px) calc(100% / var(--steps))),
+    url("../assets/images/backgrounds/sand.jpg") center / cover;
+}
+
+.lane__track::after {
+  content: "🏁";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.camel {
+  position: absolute;
+  top: 50%;
+  left: var(--progress, 2%);
+  transform: translate(-50%, -50%);
+  transition: left .55s cubic-bezier(.34, 1.4, .5, 1);
+}
+
+.camel img {
+  display: block;
+  height: 46px;
+  width: auto;
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .28));
+}
+
+.finish-badge {
+  position: absolute;
+  top: -8px;
+  right: 2px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: var(--palm);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ---------- Roll bar ---------- */
+.rollbar {
+  position: sticky;
+  bottom: 0;
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 18px;
+}
+
+.dice {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--line);
+  background: var(--sand-2);
+  font-size: 36px;
+}
+
+.turn-info {
+  flex: 1;
+  min-width: 160px;
+}
+
+.turn-info__label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.turn-info__sub {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --lane-label-width: 88px;
+  }
+
+  .track {
+    padding-top: 110px;
+  }
+
+  .lane__label {
+    font-size: 11px;
+  }
+
+  .camel img {
+    height: 34px;
+  }
+}

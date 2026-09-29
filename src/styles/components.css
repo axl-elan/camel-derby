@@ -1,0 +1,96 @@
+/* ---------- Brand header ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.brand__icon {
+  font-size: 40px;
+}
+
+.brand__title {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 800;
+  color: var(--sun-deep);
+}
+
+.brand__title--small {
+  font-size: 26px;
+}
+
+.brand__tagline {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: 0 6px 0 var(--dune);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px 28px;
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--sun);
+  box-shadow: 0 5px 0 var(--sun-deep);
+}
+
+.btn--primary:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--sun-deep);
+}
+
+.btn--roll {
+  flex: none;
+  padding: 16px 30px;
+  background: var(--sky);
+  box-shadow: 0 5px 0 var(--sky-deep);
+}
+
+.btn--roll:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--sky-deep);
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 16px;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  color: var(--ink);
+}
