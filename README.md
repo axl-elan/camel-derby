@@ -15,6 +15,12 @@ npm run preview   # Build lokal testen
 
 Der Inhalt von `dist/` ist statisch und läuft auf jedem Webhoster (GitHub Pages, Netlify, …).
 
+## Veröffentlichen
+
+Die GitHub Action [Deploy to GitHub Pages](.github/workflows/deploy-pages.yml) baut das Projekt und veröffentlicht es auf GitHub Pages. Sie läuft nur manuell: **Actions → Deploy to GitHub Pages → Run workflow**.
+
+Einmalig nötig: unter **Settings → Pages → Build and deployment** als Source **GitHub Actions** auswählen.
+
 ## Projektstruktur
 
 ```
