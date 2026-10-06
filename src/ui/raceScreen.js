@@ -1,6 +1,6 @@
 import { DICE_FACES, TIMING, TRACK_LENGTH } from '../config.js';
 import { Race, progressPercent, rollDie } from '../game.js';
-import { playFinish, playRoll, playStep } from '../audio.js';
+import { playFinish, playRoll, playStep } from '../audio/index.js';
 import { $, cloneTemplate, wait } from './dom.js';
 
 let race = null;

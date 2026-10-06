@@ -18,9 +18,12 @@
   --gold: #C79A2A;
   --silver: #8C8C94;
   --bronze: #A05A2C;
+  --royal: #5B1A8C;
+  --royal-light: #A445D9;
 
   --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
   --font-display: 'Baloo 2', system-ui, sans-serif;
+  --font-logo: 'Lobster', 'Baloo 2', cursive;
 
   --radius-lg: 22px;
   --radius-md: 16px;
@@ -37,6 +40,8 @@
     --ink-soft: #D8C1A0;
     --card: #3A2B1C;
     --line: rgba(243, 228, 206, .14);
+    --royal: #B57BE8;
+    --royal-light: #E4C6FF;
   }
 }
 
@@ -48,4 +53,6 @@
   --ink-soft: #D8C1A0;
   --card: #3A2B1C;
   --line: rgba(243, 228, 206, .14);
+  --royal: #B57BE8;
+  --royal-light: #E4C6FF;
 }

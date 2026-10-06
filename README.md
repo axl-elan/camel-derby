@@ -24,7 +24,12 @@ src/
   main.js               Einstiegspunkt: verbindet die Screens miteinander
   config.js             Spielkonstanten (Streckenlänge, Farben, Namen, Timing)
   game.js               Spiellogik (Race-Klasse), ohne DOM
-  audio.js              Soundeffekte über die Web Audio API
+  audio/                Alles live synthetisiert (Web Audio API), keine Audiodateien
+    index.js            Öffentliche API: Ton an/aus, Musikstart, Effekte
+    engine.js           AudioContext und Master-Lautstärke
+    instruments.js      Oud, Darbuka (Doum/Tek), Riq, Holzklacken
+    music.js            Hintergrundmusik im Maqam Hijaz, Maqsum-Rhythmus
+    sfx.js              Würfeln, Schritt, Zieleinlauf
   assets.js             Lädt die Kamel-Bilder
   ui/
     dom.js              DOM-Helfer (Templates, Screenwechsel)

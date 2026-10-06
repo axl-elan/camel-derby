@@ -1,4 +1,4 @@
-import { isSoundEnabled, toggleSound } from './audio.js';
+import { initAudio, isSoundEnabled, toggleSound } from './audio/index.js';
 import { showScreen } from './ui/dom.js';
 import { initSetupScreen } from './ui/setupScreen.js';
 import { initRaceScreen, startRace, stopRace } from './ui/raceScreen.js';
@@ -44,3 +44,4 @@ for (const btn of document.querySelectorAll('[data-sound-toggle]')) {
   });
 }
 renderSoundButtons();
+initAudio();
