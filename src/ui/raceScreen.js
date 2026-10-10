@@ -13,9 +13,15 @@ const els = {};
 
 function renderTrack() {
   els.track.replaceChildren(
-    ...race.players.map((p) => {
+    ...race.players.map((p, i) => {
       const lane = cloneTemplate('laneTemplate');
       lane.style.setProperty('--player-color', p.color);
+      // Lanes further down the list sit further forward; back lanes are drawn darker.
+      lane.style.zIndex = i + 1;
+      lane.style.setProperty('--depth', race.players.length > 1 ? i / (race.players.length - 1) : 1);
+      lane.style.setProperty('--step-ms', `${TIMING.camelStep}ms`);
+      // Desynchronise the idle sway so the camels don't move in lockstep.
+      lane.style.setProperty('--sway-delay', `${-Math.random() * 3}s`);
       $('.lane__name', lane).textContent = p.name;
       $('.lane__track', lane).style.setProperty('--steps', TRACK_LENGTH);
 
@@ -57,6 +63,31 @@ async function animateDice() {
   return value;
 }
 
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+/** Rocking-horse bound: lift off nose-up, land nose-down, settle. */
+const BOUND = [
+  { transform: 'translateY(0) rotate(0deg)' },
+  { transform: 'translateY(-24%) rotate(-7deg)', offset: 0.35 },
+  { transform: 'translateY(-10%) rotate(5deg)', offset: 0.7 },
+  { transform: 'translateY(0) rotate(0deg)' },
+];
+
+/** Moves a camel one field per bound, with a hoof beat on every landing. */
+async function gallop(camel, from, to, current) {
+  const img = $('img', camel);
+  for (let pos = from + 1; pos <= to; pos++) {
+    if (current !== session) return;
+    camel.style.setProperty('--progress', `${progressPercent(pos)}%`);
+    if (!reducedMotion.matches) {
+      img.animate(BOUND, { duration: TIMING.camelStep, easing: 'ease-in-out' });
+    }
+    await wait(TIMING.camelStep * 0.8);
+    playStep();
+    await wait(TIMING.camelStep * 0.2);
+  }
+}
+
 async function takeTurn(player) {
   const current = session;
   busy = true;
@@ -66,11 +97,13 @@ async function takeTurn(player) {
   const value = await animateDice();
   if (current !== session) return;
 
+  const from = player.position;
   race.move(player, value);
-  const camel = document.getElementById(`camel-${player.id}`);
-  camel.style.setProperty('--progress', `${progressPercent(player.position)}%`);
-  playStep();
   els.turnSub.textContent = `${player.name} würfelt ${value} und läuft ${value} Felder.`;
+
+  const camel = document.getElementById(`camel-${player.id}`);
+  await gallop(camel, from, player.position, current);
+  if (current !== session) return;
 
   await wait(TIMING.afterMove);
   if (current !== session) return;
@@ -79,7 +112,7 @@ async function takeTurn(player) {
     const badge = document.createElement('div');
     badge.className = 'finish-badge';
     badge.textContent = `#${player.rank}`;
-    camel.closest('.lane__track').append(badge);
+    camel.closest('.lane__runway').append(badge);
     playFinish(player.rank);
   }
 

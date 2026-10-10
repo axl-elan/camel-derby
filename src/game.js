@@ -63,7 +63,7 @@ export class Race {
   }
 }
 
-/** Horizontal position of a camel on its lane, as a percentage. */
+/** How far along its lane a camel is, from 0 (start) to 100 (finish). */
 export function progressPercent(position) {
-  return 2 + (Math.min(position, TRACK_LENGTH) / TRACK_LENGTH) * 94;
+  return (Math.min(position, TRACK_LENGTH) / TRACK_LENGTH) * 100;
 }
