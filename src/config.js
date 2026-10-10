@@ -21,7 +21,9 @@ export const DICE_FACES = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 export const TIMING = {
   diceTick: 70,
   diceTicks: 10,
-  afterMove: 600,
+  /** One gallop bound per field. */
+  camelStep: 240,
+  afterMove: 350,
   computerThinkMin: 700,
   computerThinkJitter: 500,
 };

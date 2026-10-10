@@ -11,9 +11,17 @@
   margin-bottom: 0;
 }
 
-/* ---------- Track ---------- */
+/* ---------- Track ----------
+   Fairground style: lanes are stacked tiers, back lanes on top. Each lane is a thin
+   sand surface with a wavy front edge (riser) below it. Camels are taller than a tier,
+   so they rise over the lane behind; front lanes have a higher z-index and hide the
+   legs of the camels behind them. */
 .track {
-  padding: 170px 16px 12px;
+  --surface: 30px;
+  --riser: 12px;
+  --camel-h: 66px;
+  --camel-w: calc(var(--camel-h) * 1.53); /* sprites are ~399×260 */
+  padding: 150px 16px 14px;
   border-radius: var(--radius-lg);
   background: var(--track-orange) url("../assets/images/backgrounds/desert.jpg") top center / 100% auto no-repeat;
   box-shadow: 0 6px 0 var(--dune);
@@ -21,14 +29,15 @@
 
 .lane {
   position: relative;
-  height: 56px;
-  margin-bottom: 6px;
+  height: calc(var(--surface) + var(--riser));
 }
 
 .lane__label {
   position: absolute;
-  inset: 0 auto 0 0;
-  z-index: 2;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  height: var(--surface);
   width: var(--lane-label-width);
   display: flex;
   align-items: center;
@@ -36,6 +45,7 @@
   padding-right: 8px;
   font-weight: 800;
   font-size: 13px;
+  border-radius: 8px 0 0 8px;
   background: linear-gradient(90deg, var(--card) 70%, transparent);
 }
 
@@ -53,48 +63,96 @@
   white-space: nowrap;
 }
 
+/* The tier itself: sand surface on top, wavy front edge below. */
 .lane__track {
   --steps: 25;
-  position: relative;
-  height: 100%;
-  margin-left: var(--lane-label-width);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
+  position: absolute;
+  inset: 0 0 0 calc(var(--lane-label-width) - 12px);
+  border-radius: 6px 6px 0 0;
+  /* Back tiers are a little darker, which adds depth. */
+  filter: brightness(calc(.84 + .16 * var(--depth, 1)));
   background:
+    /* shadow cast by the tier behind onto the top of this surface */
+    linear-gradient(rgba(90, 40, 0, .35), transparent 9px) top / 100% var(--surface) no-repeat,
+    /* step markers */
     repeating-linear-gradient(90deg,
       transparent 0 calc(100% / var(--steps) - 1px),
-      rgba(255, 255, 255, .55) calc(100% / var(--steps) - 1px) calc(100% / var(--steps))),
+      rgba(255, 255, 255, .5) calc(100% / var(--steps) - 1px) calc(100% / var(--steps)))
+      top / 100% var(--surface) no-repeat,
     url("../assets/images/backgrounds/sand.jpg") center / cover;
+}
+
+/* Front edge of the tier: scalloped like the wavy sand in a fairground camel race. */
+.lane__track::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--riser);
+  background:
+    radial-gradient(ellipse 9px 5px at 50% 0, #F9CF6A 92%, transparent 100%) 0 0 / 18px 7px repeat-x,
+    linear-gradient(#E9A124, #B8670C);
+  box-shadow: 0 2px 3px rgba(80, 35, 0, .35);
 }
 
 .lane__track::after {
   content: "🏁";
   position: absolute;
-  right: -6px;
-  top: 50%;
+  right: 2px;
+  top: calc(var(--surface) / 2);
   transform: translateY(-50%);
-  font-size: 20px;
+  font-size: 18px;
+}
+
+/* Where the camels walk. Not clipped, so camels can rise over the lane behind.
+   Insets keep a whole camel inside the lane at start (0%) and finish (100%). */
+.lane__runway {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--lane-label-width) + var(--camel-w) / 2 - 8px);
+  right: calc(var(--camel-w) / 2 + 14px);
 }
 
 .camel {
   position: absolute;
-  top: 50%;
-  left: var(--progress, 2%);
-  transform: translate(-50%, -50%);
-  transition: left .55s cubic-bezier(.34, 1.4, .5, 1);
+  /* feet stand on the back half of the sand surface */
+  bottom: calc(var(--riser) + var(--surface) * .3);
+  left: var(--progress, 0%);
+  transform: translateX(-50%);
+  /* One field per gallop bound; the bound itself is animated in raceScreen.js. */
+  transition: left var(--step-ms, 240ms) cubic-bezier(.45, .05, .55, .95);
 }
 
 .camel img {
   display: block;
-  height: 46px;
+  height: var(--camel-h);
   width: auto;
-  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .28));
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 4px 2px rgba(60, 25, 0, .35));
+  animation: camel-sway 3s ease-in-out var(--sway-delay, 0s) infinite;
+}
+
+/* Gentle idle rocking while waiting for the next roll. */
+@keyframes camel-sway {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(-1.5deg) translateY(-1.5%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camel {
+    transition-duration: 1ms;
+  }
+
+  .camel img {
+    animation: none;
+  }
 }
 
 .finish-badge {
   position: absolute;
-  top: -8px;
-  right: 2px;
+  z-index: 1;
+  top: -14px;
+  right: calc(var(--camel-w) / -2 - 6px);
   padding: 1px 6px;
   border-radius: 8px;
   background: var(--palm);
@@ -153,14 +211,13 @@
   }
 
   .track {
-    padding-top: 110px;
+    --surface: 22px;
+    --riser: 9px;
+    --camel-h: 46px;
+    padding: 96px 8px 10px;
   }
 
   .lane__label {
     font-size: 11px;
-  }
-
-  .camel img {
-    height: 34px;
   }
 }

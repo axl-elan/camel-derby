@@ -48,8 +48,13 @@ export function playRoll() {
   riq(out, land + 0.19, 0.1, 0.35);
 }
 
+/** Soft hoof beat in the sand, one per field. */
 export function playStep() {
-  tone(520, 0, 0.09, 'triangle', 0.12);
+  const ctx = ready();
+  if (!ctx) return;
+  const t = ctx.currentTime;
+  clack(getMaster(), t, 0.12, 700 + Math.random() * 250);
+  doum(getMaster(), t, 0.12);
 }
 
 export function playFinish(rank) {
