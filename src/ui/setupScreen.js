@@ -27,8 +27,12 @@ function render() {
       input.disabled = row.type === 'computer' || !row.active;
       input.setAttribute('aria-label', `Name Kamel ${i + 1}`);
 
-      $('[data-action="human"]', el).setAttribute('aria-pressed', row.type === 'human');
-      $('[data-action="computer"]', el).setAttribute('aria-pressed', row.type === 'computer');
+      const typeBtn = $('[data-action="type"]', el);
+      const isHuman = row.type === 'human';
+      typeBtn.dataset.type = row.type;
+      typeBtn.textContent = isHuman ? '👤' : '🤖';
+      typeBtn.title = isHuman ? 'Mensch – tippen für Computer' : 'Computer – tippen für Mensch';
+      typeBtn.setAttribute('aria-label', `Kamel ${i + 1}: ${typeBtn.title}`);
       $('.player-row__color', el).style.setProperty('--player-color', COLORS[i]);
       return el;
     }),
@@ -64,11 +68,14 @@ export function initSetupScreen({ onStart }) {
   list.addEventListener('click', (e) => {
     const btn = e.target.closest('button[data-action]');
     if (!btn) return;
-    const row = rows[btn.closest('.player-row').dataset.index];
+    const index = btn.closest('.player-row').dataset.index;
+    const row = rows[index];
     const action = btn.dataset.action;
     if (action === 'toggle') row.active = !row.active;
-    else row.type = action;
+    else if (action === 'type') row.type = row.type === 'human' ? 'computer' : 'human';
     render();
+    // render() replaces the rows; keep keyboard focus on the button that was pressed.
+    $(`.player-row[data-index="${index}"] [data-action="${action}"]`)?.focus();
   });
 
   list.addEventListener('input', (e) => {
