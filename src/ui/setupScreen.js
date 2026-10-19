@@ -1,4 +1,4 @@
-import { COLORS, COMPUTER_NAMES, MAX_PLAYERS, MIN_PLAYERS } from '../config.js';
+import { COLORS, COMPUTER_NAMES, MAX_PLAYERS, MIN_PLAYERS, MODES, QUIZ_ZONES } from '../config.js';
 import { CAMEL_IMAGES } from '../assets.js';
 import { $, cloneTemplate } from './dom.js';
 
@@ -7,6 +7,23 @@ const rows = Array.from({ length: MAX_PLAYERS }, (_, i) => ({
   type: i < 2 ? 'human' : 'computer',
   name: '',
 }));
+
+let mode = MODES.dice;
+
+const MODE_HINTS = {
+  [MODES.dice]: 'Jedes Kamel würfelt und läuft so viele Felder, wie der Würfel zeigt.',
+  [MODES.quiz]:
+    'Menschen lösen statt zu würfeln eine Rechenaufgabe. Richtig in ' +
+    QUIZ_ZONES.map((z) => `unter ${z.until} s: ${z.points} ${z.points === 1 ? 'Feld' : 'Felder'}`).join(', ') +
+    '. Computer-Kamele würfeln weiter.',
+};
+
+function renderMode() {
+  for (const btn of document.querySelectorAll('[data-mode]')) {
+    btn.setAttribute('aria-checked', btn.dataset.mode === mode);
+  }
+  $('#modeHint').textContent = MODE_HINTS[mode];
+}
 
 const defaultName = (row, i) => (row.type === 'human' ? `Spieler ${i + 1}` : COMPUTER_NAMES[i]);
 
@@ -61,7 +78,7 @@ function buildEntrants() {
   );
 }
 
-/** @param {{ onStart: (entrants: ReturnType<typeof buildEntrants>) => void }} handlers */
+/** @param {{ onStart: (entrants: ReturnType<typeof buildEntrants>, mode: string) => void }} handlers */
 export function initSetupScreen({ onStart }) {
   const list = $('#playerList');
 
@@ -83,7 +100,15 @@ export function initSetupScreen({ onStart }) {
     rows[e.target.closest('.player-row').dataset.index].name = e.target.value;
   });
 
-  $('#startBtn').addEventListener('click', () => onStart(buildEntrants()));
+  $('.mode-picker__options').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-mode]');
+    if (!btn) return;
+    mode = btn.dataset.mode;
+    renderMode();
+  });
+
+  $('#startBtn').addEventListener('click', () => onStart(buildEntrants(), mode));
 
   render();
+  renderMode();
 }

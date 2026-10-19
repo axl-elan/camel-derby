@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Kamelrennen – ein Würfel-Rennspiel für bis zu 8 Kamele.">
-  <title>camel-derby</title>
+  <title>Annikas Camel Derby</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐫</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
     <header class="brand">
       <span class="brand__icon" aria-hidden="true">🐫</span>
       <div>
-        <h1 class="brand__title">camel-derby</h1>
+        <h1 class="brand__title">Annikas Camel Derby</h1>
         <p class="brand__tagline">Bis zu 8 Kamele, 1 Würfel, viel Wüstenstaub</p>
       </div>
     </header>
@@ -29,6 +29,15 @@
     <section class="card">
       <p class="setup-intro">Wähle, wer mitspielt. Menschen tragen ihren Namen ein, Computer-Kamele würfeln von allein.</p>
       <div id="playerList"></div>
+
+      <div class="mode-picker">
+        <div class="mode-picker__options" role="radiogroup" aria-label="Spielmodus">
+          <button type="button" role="radio" data-mode="dice" aria-checked="true">🎲 Würfeln</button>
+          <button type="button" role="radio" data-mode="quiz" aria-checked="false">🧮 Rechnen</button>
+        </div>
+        <p class="mode-picker__hint" id="modeHint" aria-live="polite"></p>
+      </div>
+
       <div class="setup-actions">
         <span class="hint" id="setupHint" aria-live="polite"></span>
         <div class="row">
@@ -44,7 +53,7 @@
     <header class="race-top">
       <div class="brand">
         <span class="brand__icon" aria-hidden="true">🐫</span>
-        <h1 class="brand__title brand__title--small">camel-derby</h1>
+        <h1 class="brand__title brand__title--small">Annikas Camel Derby</h1>
       </div>
       <div class="row">
         <button type="button" class="icon-btn" data-sound-toggle="icon" title="Ton" aria-label="Ton an/aus">🔊</button>
@@ -63,6 +72,24 @@
       <button type="button" class="btn btn--roll" id="rollBtn">🎲 Würfeln</button>
     </div>
   </main>
+
+  <!-- ================= QUIZ ================= -->
+  <div id="quizOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="quizProblem" hidden>
+    <div class="quiz-card">
+      <p class="quiz-card__player" id="quizPlayer"></p>
+      <div class="quiz-timer" role="timer" aria-live="off">
+        <div class="quiz-timer__bar" id="quizBar"></div>
+      </div>
+      <p class="quiz-timer__label" id="quizPoints"></p>
+      <p class="quiz-card__problem" id="quizProblem"></p>
+      <div class="quiz-options" id="quizOptions">
+        <button type="button" class="quiz-option" data-index="0"></button>
+        <button type="button" class="quiz-option" data-index="1"></button>
+        <button type="button" class="quiz-option" data-index="2"></button>
+      </div>
+      <p class="quiz-card__feedback" id="quizFeedback" aria-live="assertive"></p>
+    </div>
+  </div>
 
   <!-- ================= RESULT ================= -->
   <div id="resultOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>

@@ -14,7 +14,7 @@
   margin: 0;
   padding-right: .1em; /* room for the script's overhanging last letter */
   font-family: var(--font-logo);
-  font-size: clamp(34px, 6vw, 52px);
+  font-size: clamp(30px, 7.5vw, 52px);
   font-weight: 400;
   line-height: 1.15;
   letter-spacing: .01em;
@@ -28,7 +28,8 @@
 }
 
 .brand__title--small {
-  font-size: 32px;
+  /* Shares the row with two icon buttons on the race screen. */
+  font-size: clamp(22px, 6vw, 32px);
 }
 
 .brand__tagline {

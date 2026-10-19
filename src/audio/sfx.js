@@ -57,6 +57,27 @@ export function playStep() {
   doum(getMaster(), t, 0.12);
 }
 
+/** Clock tick-tock for the quiz timer; `urgent` makes it brighter and louder. */
+export function playTick(tock = false, urgent = false) {
+  const ctx = ready();
+  if (!ctx) return;
+  const pitch = (tock ? 1900 : 2800) * (urgent ? 1.25 : 1);
+  clack(getMaster(), ctx.currentTime, urgent ? 0.2 : 0.12, pitch);
+}
+
+/** Quick rising Hijaz phrase, in the same scale as the music. */
+export function playCorrect() {
+  [293.66, 369.99, 440, 587.33].forEach((freq, i) => tone(freq, i * 0.08, 0.2, 'triangle', 0.16));
+  const ctx = ready();
+  if (ctx) riq(getMaster(), ctx.currentTime + 0.3, 0.1, 0.3);
+}
+
+/** Two soft falling notes; deliberately gentle, it's for kids. */
+export function playWrong() {
+  tone(311.13, 0, 0.22, 'sine', 0.18);
+  tone(233.08, 0.2, 0.35, 'sine', 0.18);
+}
+
 export function playFinish(rank) {
   const notes =
     rank === 1 ? [523, 659, 784, 1047] :

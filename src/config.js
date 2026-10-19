@@ -17,6 +17,25 @@ export const COMPUTER_NAMES = [
 
 export const DICE_FACES = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
+/** Game modes chosen on the setup screen. Computer camels always roll the dice. */
+export const MODES = {
+  dice: 'dice',
+  quiz: 'quiz',
+};
+
+/**
+ * Math mode: fields earned for a correct answer, by answer time.
+ * A wrong answer, or no answer within the last limit, earns 0.
+ */
+export const QUIZ_ZONES = [
+  { until: 5, points: 6, color: 'fast' },
+  { until: 10, points: 3, color: 'mid' },
+  { until: 15, points: 1, color: 'slow' },
+];
+
+/** All numbers in a problem, including the result, stay below this. */
+export const QUIZ_MAX_NUMBER = 99;
+
 /** Animation and pacing, in milliseconds. */
 export const TIMING = {
   diceTick: 70,
@@ -26,4 +45,6 @@ export const TIMING = {
   afterMove: 350,
   computerThinkMin: 700,
   computerThinkJitter: 500,
+  /** How long the quiz shows whether the answer was right before closing. */
+  quizFeedback: 1600,
 };
