@@ -19,9 +19,9 @@ function backToSetup() {
 }
 
 initSetupScreen({
-  onStart(entrants) {
+  onStart(entrants, mode) {
     showScreen('race');
-    startRace(entrants);
+    startRace(entrants, mode);
   },
 });
 

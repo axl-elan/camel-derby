@@ -2,7 +2,7 @@ import { isSoundEnabled, resume, setSoundEnabled, suspend } from './engine.js';
 import { isMusicPlaying, startMusic, stopMusic } from './music.js';
 
 export { isSoundEnabled } from './engine.js';
-export { playRoll, playStep, playFinish } from './sfx.js';
+export { playRoll, playStep, playFinish, playTick, playCorrect, playWrong } from './sfx.js';
 
 /** Turns all game audio (music and effects) on or off. Call from a user gesture. */
 export function toggleSound() {

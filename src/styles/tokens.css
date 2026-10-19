@@ -18,6 +18,10 @@
   --gold: #C79A2A;
   --silver: #8C8C94;
   --bronze: #A05A2C;
+  /* Quiz timer zones: 6, 3 and 1 points */
+  --zone-fast: #2E9A4B;
+  --zone-mid: #E39B12;
+  --zone-slow: #D6291B;
   --royal: #5B1A8C;
   --royal-light: #A445D9;
 

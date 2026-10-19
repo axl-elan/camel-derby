@@ -1,9 +1,12 @@
-import { DICE_FACES, TIMING, TRACK_LENGTH } from '../config.js';
+import { DICE_FACES, MODES, TIMING, TRACK_LENGTH } from '../config.js';
 import { Race, progressPercent, rollDie } from '../game.js';
+import { createProblem } from '../quiz.js';
 import { playFinish, playRoll, playStep } from '../audio/index.js';
+import { askProblem, cancelProblem } from './quizDialog.js';
 import { $, cloneTemplate, wait } from './dom.js';
 
 let race = null;
+let mode = MODES.dice;
 let busy = false;
 let onFinish = () => {};
 /** Bumped on every (re)start so stale computer turns from an abandoned race do nothing. */
@@ -40,8 +43,10 @@ function updateTurn() {
   const p = race.currentPlayer;
   if (!p) return;
   const isHuman = p.type === 'human';
+  const quiz = isHuman && mode === MODES.quiz;
   els.turnLabel.textContent = isHuman ? `${p.name} ist dran` : `${p.name} (Computer) würfelt...`;
-  els.turnSub.textContent = isHuman ? 'Klicke auf würfeln.' : 'Einen Moment...';
+  els.turnSub.textContent = !isHuman ? 'Einen Moment...' : quiz ? 'Tippe auf Rechnen.' : 'Klicke auf würfeln.';
+  els.rollBtn.textContent = quiz ? '🧮 Rechnen' : '🎲 Würfeln';
   els.rollBtn.disabled = !isHuman || busy;
 
   if (!isHuman && !busy) {
@@ -92,14 +97,25 @@ async function takeTurn(player) {
   const current = session;
   busy = true;
   els.rollBtn.disabled = true;
-  playRoll();
 
-  const value = await animateDice();
-  if (current !== session) return;
+  let steps;
+  if (mode === MODES.quiz && player.type === 'human') {
+    els.dice.textContent = '🧮';
+    steps = await askProblem(createProblem(), player.name);
+    if (steps === null || current !== session) return;
+    els.dice.textContent = steps ? DICE_FACES[steps] : '✖️';
+    els.turnSub.textContent = steps
+      ? `${player.name} rechnet richtig und läuft ${steps} ${steps === 1 ? 'Feld' : 'Felder'}.`
+      : `${player.name} bleibt diesmal stehen.`;
+  } else {
+    playRoll();
+    steps = await animateDice();
+    if (current !== session) return;
+    els.turnSub.textContent = `${player.name} würfelt ${steps} und läuft ${steps} Felder.`;
+  }
 
   const from = player.position;
-  race.move(player, value);
-  els.turnSub.textContent = `${player.name} würfelt ${value} und läuft ${value} Felder.`;
+  race.move(player, steps);
 
   const camel = document.getElementById(`camel-${player.id}`);
   await gallop(camel, from, player.position, current);
@@ -138,10 +154,15 @@ export function initRaceScreen(handlers) {
   });
 }
 
-/** Starts a new race. Pass entrants for a fresh field, or nothing to rerun the last one. */
-export function startRace(entrants) {
+/**
+ * Starts a new race. Pass entrants (and a mode) for a fresh field,
+ * or nothing to rerun the last one with the same mode.
+ */
+export function startRace(entrants, newMode) {
   session++;
   busy = false;
+  cancelProblem();
+  if (newMode) mode = newMode;
   if (entrants) race = new Race(entrants);
   else race.reset();
 
@@ -153,4 +174,5 @@ export function startRace(entrants) {
 export function stopRace() {
   session++;
   busy = false;
+  cancelProblem();
 }
