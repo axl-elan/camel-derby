@@ -28,6 +28,10 @@ Einmalig nötig: unter **Settings → Pages → Build and deployment** als Sourc
 ```
 index.html              Markup aller Screens + <template>s für Zeilen/Bahnen
 vite.config.js
+public/                 Wird unverändert nach dist/ kopiert
+  favicon.ico           16/32/48 px
+  manifest.webmanifest  App-Name und Icons (Startbildschirm, Tablets)
+  icons/                PNG-Icons 32, 180 (apple-touch-icon), 192, 512
 src/
   main.js               Einstiegspunkt: verbindet die Screens miteinander
   config.js             Spielkonstanten (Streckenlänge, Farben, Namen, Timing)
